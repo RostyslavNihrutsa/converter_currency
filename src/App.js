@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Layout from "./components/Layout";
 import InputCurrency from "./components/InputCurrency";
+import useFetch from "./hooks/useFetch";
 
 function App() {
-  const [rateCurrencies, setRateCurrencies] = useState([]);
+  const { data, isLoading, error } = useFetch("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
   const [fromCurrency, setFromCurrency] = useState("UAH");
   const [toCurrency, setToCurrency] = useState("USD");
   const [fromPrice, setFromPrice] = useState("");
@@ -35,6 +36,8 @@ function App() {
     return [UAH, ...result];
   };
 
+  const rateCurrencies = data ? formatRates(data) : [];
+
   const onChangeFromPrice = (value) => {
     value = value.replaceAll(",", ".");
     setFromPrice(value);
@@ -60,13 +63,6 @@ function App() {
   useEffect(() => {
     onChangeToPrice(toPrice);
   }, [fromCurrency]);
-
-  useEffect(() => {
-    fetch("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json")
-      .then((response) => response.json())
-      .then((data) => setRateCurrencies(formatRates(data)))
-      .catch((err) => console.log(err));
-  }, []);
 
   return (
     <Layout>
