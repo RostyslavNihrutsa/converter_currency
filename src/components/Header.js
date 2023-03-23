@@ -20,7 +20,7 @@ function Header({ rateCurrencies }) {
           </svg>
         </div>
       </div>
-      <div className=" flex justify-center gap-4">
+      <div className=" flex flex-wrap justify-center gap-4">
         {rateCurrencies.map(
           (currency) =>
             currency.cc === "UAH" || (

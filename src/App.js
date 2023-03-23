@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Layout from "./components/Layout";
 import InputCurrency from "./components/InputCurrency";
 import useFetch from "./hooks/useFetch";
+import formatRates from "./lib/formatRates";
 
 function App() {
   const { data, isLoading, error } = useFetch("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
@@ -11,30 +12,6 @@ function App() {
   const [toCurrency, setToCurrency] = useState("USD");
   const [fromPrice, setFromPrice] = useState("");
   const [toPrice, setToPrice] = useState("");
-
-  const symbolsCurrency = {
-    UAH: "₴",
-    USD: "$",
-    EUR: "€",
-  };
-
-  const formatRates = (arr) => {
-    const UAH = {
-      txt: "Гривня",
-      rate: 1,
-      cc: "UAH",
-      exchangedate: "09.03.2023",
-      symbol: "₴",
-    };
-
-    const result = arr.reduce((acc, { txt, rate, cc, exchangedate }) => {
-      if (Object.keys(symbolsCurrency).includes(cc)) {
-        acc.push({ txt, rate, cc, exchangedate, symbol: symbolsCurrency[cc] });
-      }
-      return acc;
-    }, []);
-    return [UAH, ...result];
-  };
 
   const rateCurrencies = data ? formatRates(data) : [];
 
