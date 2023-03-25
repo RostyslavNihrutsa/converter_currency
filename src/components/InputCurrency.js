@@ -28,7 +28,7 @@ function InputCurrency({ price, currency, onChangePrice, onChangeCurrency, rateC
             name="currency"
             value={currency}
             onChange={(e) => onChangeCurrency(e.target.value)}
-            className="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm md:text-lg"
+            className="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-3 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm md:text-lg"
           >
             {rateCurrencies.map((item) => (
               <option key={item.cc} value={item.cc}>
