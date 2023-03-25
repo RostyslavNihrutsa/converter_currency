@@ -7,20 +7,17 @@ function Converter({ rateCurrencies }) {
   const [fromPrice, setFromPrice] = useState("");
   const [toPrice, setToPrice] = useState("");
 
+  const rateFrom = rateCurrencies.find((currency) => currency.cc === fromCurrency)?.rate;
+  const rateTo = rateCurrencies.find((currency) => currency.cc === toCurrency)?.rate;
+
   const onChangeFromPrice = (value) => {
-    value = value.replaceAll(",", ".");
     setFromPrice(value);
-    const rateFrom = rateCurrencies.find((currency) => currency.cc === fromCurrency)?.rate;
-    const rateTo = rateCurrencies.find((currency) => currency.cc === toCurrency)?.rate;
     const price = ((value / rateTo) * rateFrom).toFixed(2);
     setToPrice(isNaN(price) ? "" : price);
   };
 
   const onChangeToPrice = (value) => {
-    value = value.replaceAll(",", ".");
     setToPrice(value);
-    const rateFrom = rateCurrencies.find((currency) => currency.cc === fromCurrency)?.rate;
-    const rateTo = rateCurrencies.find((currency) => currency.cc === toCurrency)?.rate;
     const price = ((value / rateFrom) * rateTo).toFixed(2);
     setFromPrice(isNaN(price) ? "" : price);
   };
@@ -32,6 +29,7 @@ function Converter({ rateCurrencies }) {
   useEffect(() => {
     onChangeToPrice(toPrice);
   }, [fromCurrency]);
+
   return (
     <section className="mx-auto mt-8 flex flex-col items-center justify-center gap-4 rounded-lg border border-t-sky-300 border-l-sky-300 border-b-yellow-300 border-r-yellow-300 bg-gradient-to-br from-sky-100 to-yellow-100 p-5 md:flex-row">
       <InputCurrency

@@ -11,13 +11,13 @@ function InputCurrency({ price, currency, onChangePrice, onChangeCurrency, rateC
           <span className="text-gray-500   ">{currencyItem?.symbol || " "}</span>
         </div>
         <input
-          type="text"
+          type="number"
           name="price"
           id="price"
           onChange={(e) => onChangePrice(e.target.value)}
           value={price}
           className="block w-full rounded-md border-0 py-1.5 pl-7  pr-20 text-gray-800 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6 md:text-lg"
-          placeholder="0.00"
+          placeholder="0,00"
         />
         <div className="absolute inset-y-0 right-0 flex items-center">
           <label htmlFor="currency" className="sr-only">
