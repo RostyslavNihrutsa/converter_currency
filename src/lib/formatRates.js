@@ -1,8 +1,8 @@
 const symbolsCurrency = {
   USD: "$",
   EUR: "€",
-  GBP: "£",
-  JPY: "¥",
+  //   GBP: "£",
+  //   JPY: "¥",
 };
 
 const UAH = {

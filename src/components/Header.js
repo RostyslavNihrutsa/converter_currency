@@ -26,7 +26,7 @@ function Header({ rateCurrencies }) {
             currency.cc === "UAH" || (
               <div
                 key={currency.cc}
-                className="relative flex flex-wrap items-center bg-gradient-to-br from-sky-50 to-yellow-50 space-x-3 rounded-lg border border-gray-300 bg-white py-2 px-3 shadow-sm "
+                className="relative flex flex-wrap items-center space-x-3 rounded-lg border border-gray-300 bg-white bg-gradient-to-br from-sky-50 to-yellow-50 py-2 px-3 shadow-sm "
               >
                 <div className="flex-shrink-0">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-400 text-2xl">
@@ -42,18 +42,6 @@ function Header({ rateCurrencies }) {
             )
         )}
       </div>
-      {/* <div className=" gap-x-2 py-4 text-center text-base text-gray-600">
-        <ul className="flex flex-col justify-center md:flex-row md:gap-5">
-          {rateCurrencies.map(
-            (currency) =>
-              currency.cc === "UAH" || (
-                <li key={currency.cc}>
-                  {currency.txt} - {currency.rate} грн
-                </li>
-              )
-          )}
-        </ul>
-      </div> */}
     </header>
   );
 }

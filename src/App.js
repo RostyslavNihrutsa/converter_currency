@@ -1,67 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
-import Header from "./components/Header";
 import Layout from "./components/Layout";
-import InputCurrency from "./components/InputCurrency";
+import Converter from "./components/Converter";
 import useFetch from "./hooks/useFetch";
 import formatRates from "./lib/formatRates";
 
 function App() {
-  const { data, isLoading, error } = useFetch("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
-  const [fromCurrency, setFromCurrency] = useState("UAH");
-  const [toCurrency, setToCurrency] = useState("USD");
-  const [fromPrice, setFromPrice] = useState("");
-  const [toPrice, setToPrice] = useState("");
+  const { data } = useFetch("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
 
   const rateCurrencies = data ? formatRates(data) : [];
 
-  const onChangeFromPrice = (value) => {
-    value = value.replaceAll(",", ".");
-    setFromPrice(value);
-    const rateFrom = rateCurrencies.find((currency) => currency.cc === fromCurrency)?.rate;
-    const rateTo = rateCurrencies.find((currency) => currency.cc === toCurrency)?.rate;
-    const price = ((value / rateTo) * rateFrom).toFixed(2);
-    setToPrice(isNaN(price) ? "" : price);
-  };
-
-  const onChangeToPrice = (value) => {
-    value = value.replaceAll(",", ".");
-    setToPrice(value);
-    const rateFrom = rateCurrencies.find((currency) => currency.cc === fromCurrency)?.rate;
-    const rateTo = rateCurrencies.find((currency) => currency.cc === toCurrency)?.rate;
-    const price = ((value / rateFrom) * rateTo).toFixed(2);
-    setFromPrice(isNaN(price) ? "" : price);
-  };
-
-  useEffect(() => {
-    onChangeFromPrice(fromPrice);
-  }, [toCurrency]);
-
-  useEffect(() => {
-    onChangeToPrice(toPrice);
-  }, [fromCurrency]);
-
   return (
-    <Layout>
-      <Header rateCurrencies={rateCurrencies} />
-      <main>
-        <section className="mx-auto mt-8 flex w-max flex-col items-center justify-center gap-4 rounded-lg border border-t-sky-300 border-l-sky-300 border-b-yellow-300 border-r-yellow-300 bg-gradient-to-br from-sky-100 to-yellow-100 p-5 md:flex-row">
-          <InputCurrency
-            price={fromPrice}
-            currency={fromCurrency}
-            onChangePrice={onChangeFromPrice}
-            onChangeCurrency={setFromCurrency}
-            rateCurrencies={rateCurrencies}
-          />
-          <InputCurrency
-            price={toPrice}
-            currency={toCurrency}
-            onChangePrice={onChangeToPrice}
-            onChangeCurrency={setToCurrency}
-            rateCurrencies={rateCurrencies}
-          />
-        </section>
-      </main>
+    <Layout rateCurrencies={rateCurrencies}>
+      <Converter rateCurrencies={rateCurrencies} />
     </Layout>
   );
 }
