@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import InputCurrency from "./InputCurrency";
 
 function Converter({ rateCurrencies }) {
@@ -8,28 +8,44 @@ function Converter({ rateCurrencies }) {
   const [fromPrice, setFromPrice] = useState("");
   const [toPrice, setToPrice] = useState("");
 
-  const rateFrom = rateCurrencies.find((currency) => currency.cc === fromCurrency)?.rate;
-  const rateTo = rateCurrencies.find((currency) => currency.cc === toCurrency)?.rate;
+  const getRate = (value) => rateCurrencies.find((currency) => currency.cc === value)?.rate;
+
+  const rateFrom = getRate(fromCurrency);
+  const rateTo = getRate(toCurrency);
 
   const onChangeFromPrice = (value) => {
     setFromPrice(value);
-    const price = ((value / rateTo) * rateFrom).toFixed(2);
+    const price = ((rateFrom / rateTo) * value).toFixed(2);
     setToPrice(isNaN(price) ? "" : price);
   };
 
   const onChangeToPrice = (value) => {
     setToPrice(value);
-    const price = ((value / rateFrom) * rateTo).toFixed(2);
+    const price = ((rateTo / rateFrom) * value).toFixed(2);
     setFromPrice(isNaN(price) ? "" : price);
   };
 
-  useEffect(() => {
-    onChangeFromPrice(fromPrice);
-  }, [toCurrency]);
+  const onChangeFromCurrency = (currency) => {
+    setFromCurrency(currency);
+    const rateFrom = getRate(currency);
+    const price = ((rateTo / rateFrom) * toPrice).toFixed(2);
+    setFromPrice(isNaN(price) ? "" : price);
+  };
 
-  useEffect(() => {
-    onChangeToPrice(toPrice);
-  }, [fromCurrency]);
+  const onChangeToCurrency = (currency) => {
+    setToCurrency(currency);
+    const rateTo = getRate(currency);
+    const price = ((rateFrom / rateTo) * fromPrice).toFixed(2);
+    setToPrice(isNaN(price) ? "" : price);
+  };
+
+  //  useEffect(() => {
+  //    onChangeFromPrice(fromPrice);
+  //  }, [toCurrency]);
+
+  //  useEffect(() => {
+  //    onChangeToPrice(toPrice);
+  //  }, [fromCurrency]);
 
   return (
     <section className="mx-auto mt-8 flex flex-col items-center justify-center gap-4 rounded-lg border border-t-sky-300 border-l-sky-300 border-b-yellow-300 border-r-yellow-300 bg-gradient-to-br from-sky-100 to-yellow-100 p-5 md:flex-row">
@@ -37,14 +53,14 @@ function Converter({ rateCurrencies }) {
         price={fromPrice}
         currency={fromCurrency}
         onChangePrice={onChangeFromPrice}
-        onChangeCurrency={setFromCurrency}
+        onChangeCurrency={onChangeFromCurrency}
         rateCurrencies={rateCurrencies}
       />
       <InputCurrency
         price={toPrice}
         currency={toCurrency}
         onChangePrice={onChangeToPrice}
-        onChangeCurrency={setToCurrency}
+        onChangeCurrency={onChangeToCurrency}
         rateCurrencies={rateCurrencies}
       />
     </section>
